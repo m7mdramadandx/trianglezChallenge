@@ -5,8 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ramadan.home.databinding.ItemWordBinding
 
-class Adapter(private val list: Map<String, Any>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WordsAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var list: List<Pair<String, Any>>? = null
+    fun setItems(_list: List<Pair<String, Any>>) {
+        list = emptyList()
+        list = _list
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         ViewHolder(
@@ -18,10 +24,10 @@ class Adapter(private val list: Map<String, Any>) :
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ViewHolder).bind(list.entries.elementAt(position).toPair())
+        list?.elementAt(position)?.let { (holder as ViewHolder).bind(it) }
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = list?.size ?: 0
 
     inner class ViewHolder(private val itemWordBinding: ItemWordBinding) :
         RecyclerView.ViewHolder(itemWordBinding.root) {

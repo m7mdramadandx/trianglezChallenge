@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         startActivity(Intent(this, HomeActivity::class.java))
+        finish()
     }
 
 }
