@@ -1,75 +1,116 @@
-package com.ramadan.home
+package com.ramadan.home.presentation
 
 import android.app.SearchManager
 import android.content.Context
-import android.os.AsyncTask
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.ui.AppBarConfiguration
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
+import com.ramadan.home.R
 import com.ramadan.home.databinding.ActivityHomeBinding
-import com.ramadan.netwrok.RequestTask
 import java.util.*
 
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
 
-    private lateinit var wordsAdapter: WordsAdapter
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var repeatedWordsAdapter: RepeatedWordsAdapter
     private lateinit var searchView: SearchView
-    private lateinit var task: AsyncTask<String?, Int, List<String>>
     private lateinit var repeatedWordsList: List<Pair<String, Int>>
     private var isDescending: Boolean = true // flag for sorting list
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        wordsAdapter = WordsAdapter()
-        binding.rvRepeatedWords.adapter = wordsAdapter
-        val execute = RequestTask()
-        task = execute.execute("http://instabug.com/")
+        loadData()
 
-        /**
-         * convert all chars to lower case
-         * remove special characters
-         * split the full words with a space to catch each word in a list form
-         * grouping words with them selves to catch el repeated ones
-         * put the count of each repeated word
-         * convert the map to list of pairs
-         * remove empty items from list
-         * sort list by descending order
-         */
-        repeatedWordsList = task.get().toString()
-            .lowercase(Locale.getDefault())
-            .replace(Regex("[$&+,:;=?@#|/¿§«»ω⊙¤°℃℉€¥£¢¡®©0‘'\\[\\]<>→“\".^*()%!-]"), "")
-            .split(" ")
-            .groupingBy { it }
-            .eachCount()
-            .toList()
-            .filterNot { it.first == "" }
-            .sortedByDescending { it.second }
-
-        false.toggleEmptyResult()
-        wordsAdapter.setItems(repeatedWordsList)
+        repeatedWordsAdapter = RepeatedWordsAdapter()
+        binding.rvRepeatedWords.adapter = repeatedWordsAdapter
 
         // handle on refresh listener, reset all view to defaults
         binding.swipeToRefresh.setOnRefreshListener {
-            wordsAdapter.setItems(repeatedWordsList)
-            binding.swipeToRefresh.isRefreshing = false
-            binding.toolbar.menu?.getItem(1)?.setIcon(R.drawable.ic_sort_descending)
+            Handler(Looper.getMainLooper()).postDelayed({
+                loadData()
+                binding.swipeToRefresh.isRefreshing = false
+                binding.toolbar.menu?.getItem(1)?.setIcon(R.drawable.ic_sort_descending)
+            }, 1000L)
+
         }
     }
+
+    private fun loadData() {
+        viewModel.checkInternetConnection(this).observe(this) {
+            if (it == true) {
+                fetchNetworkData()
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.no_internet_connection),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setBackgroundTint(Color.RED)
+                    .show()
+                getLocalData()
+            }
+        }
+    }
+
+    private fun fetchNetworkData() {
+        viewModel.fetchData().observe(this) { list ->
+
+            if (list.isNullOrEmpty()) {
+                true.toggleEmptyResult()
+                binding.tvErrorMsg.apply {
+                    text = getString(R.string.something_went_wrong)
+                    visibility = View.VISIBLE
+                }
+
+            } else {
+                false.toggleEmptyResult()
+                repeatedWordsList = list
+                repeatedWordsAdapter.setItems(list)
+                setLocalData(list)
+            }
+        }
+    }
+
+    private fun setLocalData(list: List<Pair<String, Int>>) {
+        viewModel.insert(this, list)
+    }
+
+    private fun getLocalData() {
+        viewModel.fetchOfflineData(this).observe(this) {
+
+            if (it.isNullOrEmpty()) {
+                true.toggleEmptyResult()
+                binding.tvErrorMsg.apply {
+                    text = getString(R.string.something_went_wrong)
+                    visibility = View.VISIBLE
+                }
+
+            } else {
+                false.toggleEmptyResult()
+                repeatedWordsList = it
+                repeatedWordsAdapter.setItems(it)
+            }
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -94,7 +135,7 @@ class HomeActivity : AppCompatActivity() {
                     // reset items on typing no characters
                     if (p0?.isEmpty() == true) {
                         false.toggleEmptyResult()
-                        wordsAdapter.setItems(repeatedWordsList)
+                        repeatedWordsAdapter.setItems(repeatedWordsList)
 
                     } else {
                         // filter the list by typing characters
@@ -106,7 +147,7 @@ class HomeActivity : AppCompatActivity() {
 
                         // update the list when results are founds
                         else false.toggleEmptyResult()
-                        wordsAdapter.setItems(searchResultList)
+                        repeatedWordsAdapter.setItems(searchResultList)
                     }
                     return true
                 }
@@ -126,7 +167,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
                 hideKeyboard()
                 false.toggleEmptyResult()
-                wordsAdapter.setItems(repeatedWordsList)
+                repeatedWordsAdapter.setItems(repeatedWordsList)
                 return true
             }
 
@@ -150,7 +191,7 @@ class HomeActivity : AppCompatActivity() {
                 val sortedList = if (isDescending) repeatedWordsList.sortedBy { it.second }
                 else repeatedWordsList.sortedByDescending { it.second }
 
-                wordsAdapter.setItems(sortedList)
+                repeatedWordsAdapter.setItems(sortedList)
                 binding.rvRepeatedWords.scrollToPosition(0)
                 isDescending = !isDescending
                 if (isDescending) item.setIcon(R.drawable.ic_sort_descending)
@@ -180,12 +221,14 @@ class HomeActivity : AppCompatActivity() {
     // toggle fun that show/hide empty view
     private fun Boolean.toggleEmptyResult() {
         if (this) {
+            binding.pbRepeatedWords.visibility = View.GONE
             binding.rvRepeatedWords.visibility = View.GONE
             binding.tvErrorMsg.apply {
-                text = "No Result"
+                text = getString(R.string.sorry_no_result_found)
                 visibility = View.VISIBLE
             }
         } else {
+            binding.pbRepeatedWords.visibility = View.GONE
             binding.rvRepeatedWords.visibility = View.VISIBLE
             binding.tvErrorMsg.apply {
                 text = ""

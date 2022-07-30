@@ -6,32 +6,32 @@
     <path
         android:pathData="M144,88l40,-40l40,40"
         android:strokeWidth="16"
-        android:strokeColor="#FFFFFF"
+        android:strokeColor="@android:color/white"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:fillColor="#00000000"
         android:pathData="M184,144L184,48"
         android:strokeWidth="16"
-        android:strokeColor="#FFFFFF"
+        android:strokeColor="@android:color/white"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M48,128L120,128"
         android:strokeWidth="16"
-        android:strokeColor="#FFFFFF"
+        android:strokeColor="@android:color/white"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M48,64L104,64"
         android:strokeWidth="16"
-        android:strokeColor="#FFFFFF"
+        android:strokeColor="@android:color/white"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M48,192L184,192"
         android:strokeWidth="16"
-        android:strokeColor="#FFFFFF"
+        android:strokeColor="@android:color/white"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 </vector>

@@ -8,6 +8,8 @@
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/app/src/main/res/xml/searchable.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/home/src/main/res/drawable/ic_search.xml" value="0.137" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/home/src/main/res/drawable/ic_sort.xml" value="0.137" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/home/src/main/res/drawable/ic_sort_ascending.xml" value="0.137" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/home/src/main/res/drawable/ic_sort_descending.xml" value="0.137" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/home/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/home/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/InstabugChallenge/home/src/main/res/layout/activity_search_results.xml" value="0.2111111111111111" />

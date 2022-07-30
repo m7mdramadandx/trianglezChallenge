@@ -3,8 +3,7 @@ package com.ramadan.instabugchallenge
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.ui.AppBarConfiguration
-import com.ramadan.home.HomeActivity
+import com.ramadan.home.presentation.HomeActivity
 import com.ramadan.instabugchallenge.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
