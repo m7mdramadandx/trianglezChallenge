@@ -5,8 +5,6 @@ apply plugin: 'dagger.hilt.android.plugin'
 dependencies {
 
     implementation "androidx.hilt:hilt-common:1.0.0"
-    implementation "androidx.hilt:hilt-work:1.0.0"
-    implementation "androidx.hilt:hilt-navigation-fragment:1.0.0"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
 

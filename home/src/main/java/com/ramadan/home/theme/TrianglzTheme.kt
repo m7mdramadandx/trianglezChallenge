@@ -12,12 +12,6 @@ object TrianglzTheme {
         get() = Color.localTrianglzColors.current
 
 
-    val typography: TrianglzTypography
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalTypography.current
-
-    // We use the default material shapes
     val shapes: Shapes
         @ReadOnlyComposable
         @Composable

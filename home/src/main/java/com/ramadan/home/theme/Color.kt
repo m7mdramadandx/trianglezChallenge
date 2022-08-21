@@ -1,6 +1,5 @@
 package com.ramadan.home.theme
 
-import android.annotation.SuppressLint
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -12,7 +11,7 @@ object Color {
         error("No TrianglzColorPalette provided")
     }
 
-    private val appBar = Color(0xFF17223b)
+    private val appBar = Color(0xFF1A3C40)
     private val appBarDark = Color(0xFF111111)
     private val background = Color(0xFFEDF7FA)
     private val backgroundDark = Color(0xFF151515)
@@ -40,13 +39,13 @@ object Color {
     private val disabledTextDark = Color(0xFFFFFFFF)
     private val disabledTextWithoutBg = Color(0xFF5D5D5D)
     private val disabledTextWithoutBgDark = Color(0xFFB1B1B1)
-    private val activityIndicator = Color(0xFF1E185B)
+    private val activityIndicator = Color(0xFF1D5C63)
     private val activityIndicatorDark = Color(0xFFFFFFFF)
 
     private val icon = Color(0xFF1D5C63)
     private val iconDark = Color(0xFFFFFFFF)
-    private val iconSecondary = Color(0xFF1A3C40)
-    private val iconSecondaryDark = Color(0xFF1A3C40)
+    private val iconSecondary = Color(0xFFFFFFFF)
+    private val iconSecondaryDark = Color(0xFF252525)
     private val iconInteractive = Color(0xFF5D5D5D)
     private val iconInteractiveDark = Color(0xFF5D5D5D)
     private val border = Color(0xFFE3DFE6)
@@ -57,7 +56,7 @@ object Color {
     private val error = Color(0xFFAC0303)
     private val white = Color(0xFFFFFFFF)
     private val black = Color(0xFF000000)
-    private val primary = Color(0xFF162853)
+    private val primary = Color(0xFF1D5C63)
     private val secondary = Color(0xFFE1B34F)
     private val gradientPrimary = listOf(appBar, primary)
     private val gradientPrimaryDark = listOf(buttonDark, appBarDark, background)
@@ -130,15 +129,14 @@ object Color {
 
 
     // Native MaterialTheme Colors
-    @SuppressLint("ConflictingOnColor")
     val LightColorPalette = lightColors(
         primary = appBar,
-        primaryVariant = button,
-        secondary = secondary,
-        secondaryVariant = button,
+        primaryVariant = background,
+        secondary = appBar,
+        secondaryVariant = background,
         error = error,
         background = background,
-        surface = appBar,
+        surface = background,
         onPrimary = backgroundDark,
 
         onError = background,
@@ -147,16 +145,15 @@ object Color {
         onSurface = backgroundDark,
     )
 
-    @SuppressLint("ConflictingOnColor")
     val DarkColorPalette = darkColors(
         primary = appBar,
-        primaryVariant = button,
-        secondary = secondary,
-        secondaryVariant = button,
+        primaryVariant = backgroundDark,
+        secondary = appBar,
+        secondaryVariant = backgroundDark,
         error = error,
         background = backgroundDark,
         surface = backgroundDark,
-        onPrimary = backgroundDark,
+        onPrimary = background,
 
         onError = backgroundDark,
         onSecondary = background,

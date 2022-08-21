@@ -10,10 +10,10 @@ import com.ramadan.cache.entity.MoviesEntity
 interface MoviesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSpecialties(list: List<MoviesEntity>)
+    suspend fun insertMovies(list: List<MoviesEntity>)
 
     @Query("SELECT * FROM movies_table")
-    suspend fun getSpecialties(): List<MoviesEntity>
+    suspend fun getMovies(): List<MoviesEntity>
 
 
     @Query("DELETE FROM movies_table")

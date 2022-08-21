@@ -7,10 +7,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.ramadan.home.theme.Color
-import com.ramadan.home.theme.TrianglzColors
-import com.ramadan.home.theme.TrianglzShape
-import com.ramadan.home.theme.Typography
 
 
 @Composable
@@ -31,7 +27,6 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable ()
     ProvideTrianglzColors(TrianglzColors) {
         MaterialTheme(
             colors = colors,
-            typography = Typography,
             shapes = TrianglzShape.myShapes,
             content = content
         )

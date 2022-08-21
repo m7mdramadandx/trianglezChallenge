@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.ramadan.cache.DBConstant
 import com.ramadan.cache.MoviesDatabase
-import com.ramadan.cache.SharedPref
-import com.ramadan.cache.SharedPrefManager
 import com.ramadan.cache.db.MoviesDao
 import com.ramadan.home.data.HomeRepoImpl
 import com.ramadan.home.data.source.local.LocalDataSource
@@ -30,7 +28,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object AppModule {
 
     @Singleton
     @Provides
@@ -41,17 +39,13 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideHttpClient(
-        @ApplicationContext context: Context,
         interceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-//        val chuckerInterceptor =
-//            ChuckerInterceptor.Builder(context).alwaysReadResponseBody(true).build()
 
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
-//            .addInterceptor(chuckerInterceptor)
 
         if (BuildConfig.DEBUG) {
             okHttpClient.addInterceptor(interceptor)
@@ -75,16 +69,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideSharedPrefManager(@ApplicationContext appContext: Context) =
-        SharedPrefManager(appContext)
-
-    @Provides
-    @Singleton
-    fun provideShared(sharedPrefManager: SharedPrefManager) = SharedPref(sharedPrefManager)
-
-
-    @Provides
-    @Singleton
     fun provideMoviesDatabase(@ApplicationContext context: Context): MoviesDatabase {
         return Room.databaseBuilder(context, MoviesDatabase::class.java, DBConstant.DB_NAME)
             .fallbackToDestructiveMigration()
@@ -104,8 +88,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideLocalDataSource(sharedPref: SharedPref): LocalDataSource =
-        LocalDataSourceImp(sharedPref)
+    fun provideLocalDataSource(moviesDao: MoviesDao): LocalDataSource =
+        LocalDataSourceImp(moviesDao)
 
 
     @Provides

@@ -1,6 +1,7 @@
 package com.ramadan.home.domain
 
-import com.ramadan.netwrok.MoviesResponse
+import com.ramadan.netwrok.data.model.MovieApiModel
+import com.ramadan.netwrok.data.response.MoviesResponse
 import javax.inject.Inject
 
 class HomeUseCase @Inject constructor(
@@ -10,27 +11,16 @@ class HomeUseCase @Inject constructor(
     suspend fun getPopularMovies(): MoviesResponse {
         val response = homeRepo.getRemotePopularMovies()
 
-//        response.configuration?.let {
-//            val currentVersion = homeRepo.getConfigurationVersion()
-//            // if user has no config version
-//            if (currentVersion.isNullOrEmpty()) {
-//                getConfiguration()
-//                homeRepo.setConfigurationVersion(it.currentVersion)
-//
-//            } else {
-//                // check if user has the latest config version
-//                val _currentVersion = currentVersion.replace(".", "").toInt()
-//                val apiVersion = it.currentVersion.replace(".", "").toInt()
-//
-//                // update config if user has old config version
-//                if (apiVersion > _currentVersion) {
-//                    getConfiguration()
-//                    homeRepo.setConfigurationVersion(it.currentVersion)
-//                }
-//            }
-//        }
+        if (response.page == 1) {
+            response.movieApiModels?.let {
+                homeRepo.setLocalMovies(it)
+            }
+        }
 
         return response
     }
+
+    suspend fun getLocalPopularMovies(): List<MovieApiModel> =
+        homeRepo.getLocalMovies()
 
 }

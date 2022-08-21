@@ -16,7 +16,6 @@ fun TrianglzScaffold(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     topBar: @Composable (() -> Unit) = {},
     bottomBar: @Composable (() -> Unit) = {},
-    snackbarHost: @Composable (SnackbarHostState) -> Unit = { SnackbarHost(it) },
     floatingActionButton: @Composable (() -> Unit) = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     isFloatingActionButtonDocked: Boolean = false,
@@ -35,7 +34,16 @@ fun TrianglzScaffold(
         scaffoldState = scaffoldState,
         topBar = topBar,
         bottomBar = bottomBar,
-        snackbarHost = snackbarHost,
+        snackbarHost = {
+            SnackbarHost(it) { data ->
+                Snackbar(
+                    actionColor = TrianglzTheme.colors.button,
+                    snackbarData = data,
+                    backgroundColor = TrianglzTheme.colors.cardBg,
+                    contentColor = TrianglzTheme.colors.textPrimary
+                )
+            }
+        },
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
         isFloatingActionButtonDocked = isFloatingActionButtonDocked,

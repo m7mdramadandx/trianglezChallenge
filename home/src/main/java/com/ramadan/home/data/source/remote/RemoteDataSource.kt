@@ -1,6 +1,6 @@
 package com.ramadan.home.data.source.remote
 
-import com.ramadan.netwrok.MoviesResponse
+import com.ramadan.netwrok.data.response.MoviesResponse
 
 interface RemoteDataSource {
 

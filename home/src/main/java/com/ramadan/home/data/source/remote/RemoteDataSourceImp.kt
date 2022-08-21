@@ -1,7 +1,7 @@
 package com.ramadan.home.data.source.remote
 
 import com.ramadan.netwrok.ApiService
-import com.ramadan.netwrok.MoviesResponse
+import com.ramadan.netwrok.data.response.MoviesResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

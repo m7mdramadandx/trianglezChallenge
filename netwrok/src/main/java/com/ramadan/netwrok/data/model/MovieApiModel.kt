@@ -1,16 +1,14 @@
-package com.ramadan.cache.entity
+package com.ramadan.netwrok.data.model
 
-import androidx.annotation.Keep
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-
-@Keep
-@Entity(tableName = "movies_table")
-data class MoviesEntity(
-    @PrimaryKey val id: Int?,
+@Parcelize
+data class MovieApiModel(
     val adult: Boolean?,
     val backdrop_path: String?,
+    val genre_ids: List<Int>?,
+    val id: Int?,
     val original_language: String?,
     val original_title: String?,
     val overview: String?,
@@ -21,4 +19,4 @@ data class MoviesEntity(
     val video: Boolean?,
     val vote_average: Double?,
     val vote_count: Int?
-)
+) : Parcelable
